@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script type="text/javascript">
+
+      var dict = {
+         "empty" : "",
+         "_2dp" : "https://samsungvr.com/ui/CMS/2D.png",
+         "_3dpv" : "https://samsungvr.com/ui/CMS/3DVPlaneScreen/3DVBothPlaneScreen.png",
+         "_3dph" : "https://samsungvr.com/ui/CMS/3DHPlaneScreen/3DHBothPlaneScreen.png",
+         "180x180" : "https://samsungvr.com/ui/CMS/Geometry/2D180.html",
+         "180x101" : "https://samsungvr.com/ui/CMS/Geometry/2D180x101.html",
+         "180x101_3dh" : "https://samsungvr.com/ui/CMS/Geometry/3DH180x101.html",
+         "_mono360" : "https://samsungvr.com/ui/CMS/Geometry/2D360.html",
+         "3dv" : "https://samsungvr.com/ui/CMS/Geometry/3DV360.html",
+         "3dh" : "https://samsungvr.com/ui/CMS/Geometry/3DH360.html",
+         "_cubemap" : "https://samsungvr.com/ui/CMS/Geometry/CubemapMono.html",
+         "_cubemap_tb" : "https://samsungvr.com/ui/CMS/Geometry/cubemap_tb.png",
+         "_cubemap_lr" : "https://samsungvr.com/ui/CMS/Geometry/cubemap_lr%E2%80%8B.jpg",
+         "_octahedron" : "https://samsungvr.com/ui/CMS/Geometry/2DOctahedron.html",
+         "_icosahedron" : "https://samsungvr.com/ui/CMS/Geometry/2DIcosahedron.html",
+         "180x180_3dv" : "https://samsungvr.com/ui/CMS/Geometry/3DV180.html",
+         "180x180_3dh" : "https://samsungvr.com/ui/CMS/Geometry/3DH180x101.html",
+         "180x180_squished_3dh" : "https://samsungvr.com/ui/CMS/Geometry/180x1803DSquished.html",
+         "180x160_3dv" : "https://samsungvr.com/ui/CMS/Geometry/3DV180x101.html",
+         "180hemispheres" : "https://samsungvr.com/ui/CMS/Geometry/180Hemispheres.html",
+         "cylinder_slice_2x25_3dv" : "https://samsungvr.com/ui/CMS/Cylinder2_25/Cylinder2_25Both.png",
+         "cylinder_slice_16x9_3dv" : "https://samsungvr.com/ui/CMS/Cylinder16x9/Cylinder16x9Both.png",
+         "sib3d" : "https://samsungvr.com/ui/CMS/SIB3D/StaticImageBottom3DBoth.png",
+         "_planetarium" : "https://samsungvr.com/ui/CMS/Planetarium.png",
+         "_v360" : "https://samsungvr.com/ui/CMS/Geometry/V360.html",
+         "_rtxp" : ""
+      }
+
+      function launch_SamsungVR()
+      {
+         var link = document.getElementById('vlnk').value;
+         if (!(link.startsWith("http://") || link.startsWith("https://")) || !link.endsWith(".mp4"))
+         {
+            alert("Please enter a valid HTTP or HTTPS MP4 video link.");
+            return
+         }
+         var type = document.getElementById('vtype').value;
+         if (type == "empty")
+         {
+            alert("Please choose a video type.");
+            return
+         }
+         window.location.href = "samsungvr://sideload/?url=" + link + "&video_type=" + type;
+      }
+
+      function load_diagram()
+      {
+         var type = document.getElementById('vtype').value;
+         var frame_link = dict[type];
+         var doc = document.getElementById('iframe').contentWindow.document;
+         doc.open();
+         if (frame_link == "")
+         {
+            doc.write("")
+         }
+         else if (frame_link.endsWith(".png") || frame_link.endsWith(".jpg"))
+         {
+            var body_text = "<html><body><p align=\"center\"><img src=\"" + frame_link + "\" style=\"border:none;height:256px\"></img></p></body></html>"
+            doc.write(body_text)
+         }
+         else if (frame_link.endsWith(".html"))
+         {
+            var body_text = "<html><body><p align=\"center\"><iframe src=\"" + frame_link + "\" style=\"border:none;width:512px;height:256px\"></iframe></p></body></html>"
+            doc.write(body_text)
+         }
+         else
+         {
+            doc.write("")
+         }
+         doc.close();
+      }
+
+      </script>
+   </head>
+
+   <body>
+      HTTP MP4 Video Link:
+      <textarea style="width:100%" rows="5" id="vlnk" value="" placeholder="http://"></textarea>
+      <br />
+      <br />
+      Video Type:
+      <select style="width:100%;height:32px" id="vtype" value="" onchange="load_diagram()">
+         <option value="empty">Select video type</option>
+         <option value="_2dp">2D video</option>
+         <option value="_3dpv">3D top bottom video</option>
+         <option value="_3dph">3D left right video</option>
+         <option value="180x180">Monoscopic 180</option>
+         <option value="180x101">Monoscopic 180 16:9</option>
+         <option value="180x101_3dh">Left right stereoscopic 180 16:9</option>
+         <option value="_mono360">Monoscopic 360 equirectangular projection</option>
+         <option value="3dv">Top bottom stereoscopic 360 equirectangular projection</option>
+         <option value="3dh">Left right stereoscopic 360 equirectangular projection</option>
+         <option value="_cubemap">Monoscopic 360 cube projection</option>
+         <option value="_cubemap_tb">Top bottom stereoscopic 360 cube projection</option>
+         <option value="_cubemap_lr">Left right stereoscopic 360 cube projection</option>
+         <option value="_octahedron">Monoscopic 360 octahedron projection</option>
+         <option value="_icosahedron">Monoscopic 360 icosahedron projection</option>
+         <option value="180x180_3dv">Top bottom stereoscopic 3D 180</option>
+         <option value="180x180_3dh">Left right stereoscopic 3D 180</option>
+         <option value="180x180_squished_3dh">Left right stereo 3D 180 squished</option>
+         <option value="180x160_3dv">Top bottom stereoscopic 3D 180x160</option>
+         <option value="180hemispheres">Two monoscopic 180 hemispheres</option>
+         <option value="cylinder_slice_2x25_3dv">Top bottom 3D cylinder 2.25:1</option>
+         <option value="cylinder_slice_16x9_3dv">Top bottom 3D cylinder 16:9</option>
+         <option value="sib3d">Top bottom 3D 360 no bottom</option>
+         <option value="_planetarium">180 planetarium full dome</option>
+         <option value="_v360">V360 camera</option>
+         <option value="_rtxp">RTXP 360 cylindrical</option>
+      </select>
+      <br />
+      <br />
+      <iframe id="iframe" style="border:none;width:100%;height:280px"></iframe>
+      <br />
+      <br />
+      <button style="width:100%;height:64px" onclick="launch_SamsungVR()"><font size="5">Start SamsungVR</font></button>
+      <br />
+      <br />
+      <br />
+      Copyright © <script type="text/javascript">document.write((new Date()).getFullYear())</script> <a href="https://github.com/tonyzzz321">tonyzzz321</a>
+   </body>
+</html>
